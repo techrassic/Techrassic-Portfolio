@@ -1,0 +1,1 @@
+console.log("TECHRASSIC website loaded successfully.");
