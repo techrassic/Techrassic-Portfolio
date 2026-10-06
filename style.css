@@ -349,18 +349,23 @@ a {
     min-width: 0;
 }
 
+
+/* =========================================================
+   FLYING DRAGON
+========================================================= */
+
 .hero-mascot {
-    flex: 0 0 360px;
+    flex: 0 0 380px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    animation: mascot-float 4s ease-in-out infinite;
+    animation: dragon-enter 1.2s ease-out forwards;
 }
 
 .hero-mascot img {
-    width: min(360px, 100%);
+    width: min(380px, 100%);
 
     height: auto;
 
@@ -368,19 +373,76 @@ a {
 
     filter:
         drop-shadow(0 20px 25px rgba(17, 20, 17, 0.12));
+
+    animation: dragon-fly 4s ease-in-out 1.2s infinite;
 }
 
-@keyframes mascot-float {
+
+/* ---------- DRAGON ENTERS FROM RIGHT ---------- */
+
+@keyframes dragon-enter {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateX(180px)
+            translateY(20px)
+            rotate(8deg);
+    }
+
+    70% {
+        opacity: 1;
+
+        transform:
+            translateX(-10px)
+            translateY(-5px)
+            rotate(-2deg);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            translateY(0)
+            rotate(0deg);
+    }
+}
+
+
+/* ---------- DRAGON GENTLE FLYING ---------- */
+
+@keyframes dragon-fly {
 
     0%,
     100% {
-        transform: translateY(0) rotate(0deg);
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    25% {
+        transform:
+            translateY(-10px)
+            rotate(1deg);
     }
 
     50% {
-        transform: translateY(-12px) rotate(1deg);
+        transform:
+            translateY(-18px)
+            rotate(0deg);
+    }
+
+    75% {
+        transform:
+            translateY(-8px)
+            rotate(-1deg);
     }
 }
+
+
+/* ---------- HERO TEXT ---------- */
 
 .eyebrow {
     color: var(--green);
@@ -1097,7 +1159,7 @@ footer {
     }
 
     .hero-mascot {
-        flex-basis: 280px;
+        flex-basis: 300px;
     }
 
     .services-grid {
@@ -1427,7 +1489,7 @@ footer {
         scroll-behavior: auto;
     }
 
-    * ,
+    *,
     *::before,
     *::after {
         transition-duration: 0.01ms !important;
