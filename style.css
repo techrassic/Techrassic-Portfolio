@@ -1520,6 +1520,9 @@ footer {
     animation: mascot-page-enter 0.8s ease-out forwards;
 }
 
+
+/* ---------- MASCOT IMAGE ---------- */
+
 .page-mascot img {
     width: 100%;
     height: auto;
@@ -1530,6 +1533,17 @@ footer {
         drop-shadow(0 15px 20px rgba(17, 20, 17, 0.15));
 
     animation: mascot-page-float 3.5s ease-in-out infinite;
+
+    transition:
+        filter 0.3s ease;
+}
+
+
+/* ---------- MASCOT HOVER ---------- */
+
+.page-mascot:hover img {
+    filter:
+        drop-shadow(0 18px 25px rgba(17, 20, 17, 0.20));
 }
 
 
@@ -1561,10 +1575,31 @@ footer {
 
     box-shadow:
         0 10px 25px rgba(17, 20, 17, 0.10);
+
+    opacity: 0;
+
+    transform:
+        translateY(8px)
+        scale(0.95);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 
-/* Speech bubble tail */
+/* ---------- SHOW BUBBLE ON HOVER ---------- */
+
+.page-mascot:hover .mascot-bubble {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* ---------- SPEECH BUBBLE TAIL ---------- */
 
 .mascot-bubble::after {
     content: "";
@@ -1651,6 +1686,15 @@ footer {
         width: 150px;
 
         font-size: 12px;
+    }
+
+    /* Show the speech bubble on mobile */
+    .mascot-bubble {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
     }
 
 }
