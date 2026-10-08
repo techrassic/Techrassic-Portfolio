@@ -393,7 +393,7 @@ a {
      * Bubble sits above and to the
      * left of the dragon's head.
      */
-    top: 18px;
+    top: -45px;
     left: -45px;
 
     width: 185px;
