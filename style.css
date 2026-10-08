@@ -374,6 +374,8 @@ a {
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
     animation: dragon-enter 1.2s ease-out forwards;
 }
 
@@ -393,6 +395,109 @@ a {
         ease-in-out
         1.2s
         infinite;
+
+    transition:
+        filter 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* ---------- DRAGON HOVER ---------- */
+
+.hero-mascot:hover img {
+    filter:
+        drop-shadow(0 24px 30px rgba(17, 20, 17, 0.18));
+
+    transform: scale(1.04) rotate(-2deg);
+}
+
+
+/* ---------- HERO MASCOT SPEECH BUBBLE ---------- */
+
+.hero-mascot-bubble {
+    position: absolute;
+
+    right: calc(100% - 30px);
+    top: 12%;
+
+    width: 210px;
+
+    padding: 14px 17px;
+
+    background: var(--white);
+
+    color: var(--dark-grey);
+
+    border: 1px solid var(--border);
+
+    border-radius: 17px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 30px rgba(17, 20, 17, 0.10);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform:
+        translateY(12px)
+        scale(0.88);
+
+    transform-origin: bottom right;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        visibility 0s linear 0.35s;
+
+    z-index: 5;
+}
+
+
+/* ---------- SPEECH BUBBLE SHOWS ---------- */
+
+.hero-mascot-bubble.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        visibility 0s linear 0s;
+}
+
+
+/* ---------- SPEECH BUBBLE TAIL ---------- */
+
+.hero-mascot-bubble::after {
+    content: "";
+
+    position: absolute;
+
+    right: -8px;
+    bottom: 20px;
+
+    width: 16px;
+    height: 16px;
+
+    background: var(--white);
+
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+
+    transform: rotate(45deg);
 }
 
 
@@ -1300,12 +1405,6 @@ footer {
 
         z-index: 1002;
 
-        /*
-         * IMPORTANT:
-         * The menu is always present for animation,
-         * but when closed it cannot block the page.
-         */
-
         opacity: 0;
 
         visibility: hidden;
@@ -1413,6 +1512,46 @@ footer {
 
     .hero-mascot img {
         width: 100%;
+    }
+
+
+    /* ---------- HERO MASCOT BUBBLE ---------- */
+
+    .hero-mascot-bubble {
+        right: auto;
+        left: 50%;
+
+        top: -55px;
+
+        width: 190px;
+
+        font-size: 12px;
+
+        transform:
+            translateX(-50%)
+            translateY(12px)
+            scale(0.88);
+    }
+
+    .hero-mascot-bubble.show {
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+
+    .hero-mascot-bubble::after {
+        right: auto;
+        left: 50%;
+
+        bottom: -8px;
+
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        border-top: 0;
+        border-left: 0;
+
+        transform: translateX(-50%) rotate(45deg);
     }
 
 
@@ -1583,7 +1722,7 @@ footer {
         scroll-behavior: auto;
     }
 
-    * ,
+    *,
     *::before,
     *::after {
         transition-duration: 0.01ms !important;
