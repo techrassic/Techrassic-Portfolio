@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*
      * Open / close the menu.
-     * Every menu action goes through this function.
      */
     function setMenuOpen(open) {
 
@@ -47,17 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /*
          * Initial state.
-         * This prevents the menu from accidentally
-         * starting open.
          */
         setMenuOpen(false);
 
 
         /*
          * HAMBURGER TOGGLE
-         *
-         * First tap  -> open
-         * Second tap -> close
          */
         menuToggle.addEventListener("click", (event) => {
 
@@ -121,57 +115,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       HOMEPAGE MASCOT GREETING
+       MASCOT INTERACTION
     ========================================= */
 
-    const heroMascot = document.querySelector(".hero-mascot");
-    const heroMascotBubble =
-        document.querySelector(".hero-mascot-bubble");
+    const pageMascot = document.querySelector(".page-mascot");
 
 
-    /*
-     * Show the homepage dragon's greeting
-     * after the dragon has finished entering.
-     */
-    if (heroMascot && heroMascotBubble) {
+    if (pageMascot) {
+
+        /*
+         * Give the mascot a small attention reaction
+         * after the visitor has been on the page for a while.
+         */
+        const mascotAttentionDelay = 7000;
 
         setTimeout(() => {
 
-            heroMascotBubble.classList.add("show");
-
-        }, 1500);
-
-
-        /*
-         * Hide the greeting after a few seconds.
-         * The bubble can appear again when the
-         * visitor interacts with the dragon.
-         */
-        setTimeout(() => {
-
-            heroMascotBubble.classList.remove("show");
-
-        }, 5200);
-
-
-        /*
-         * Show the greeting again when the user
-         * interacts with the mascot.
-         */
-        heroMascot.addEventListener("mouseenter", () => {
-
-            heroMascotBubble.classList.add("show");
-
-        });
-
-
-        heroMascot.addEventListener("mouseleave", () => {
+            pageMascot.classList.add("mascot-attention");
 
             setTimeout(() => {
 
-                heroMascotBubble.classList.remove("show");
+                pageMascot.classList.remove("mascot-attention");
 
-            }, 1200);
+            }, 800);
+
+        }, mascotAttentionDelay);
+
+
+        /*
+         * Give the mascot another small reaction
+         * when the visitor moves the mouse over it.
+         */
+        pageMascot.addEventListener("mouseenter", () => {
+
+            pageMascot.classList.remove("mascot-attention");
 
         });
 
@@ -308,10 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /*
              * Ignore modified clicks.
-             *
-             * This allows Ctrl/Cmd + click,
-             * Shift + click and middle-click
-             * to behave normally.
              */
             if (
                 event.ctrlKey ||
