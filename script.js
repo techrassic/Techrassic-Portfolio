@@ -1,187 +1,276 @@
 console.log("TECHRASSIC website loaded successfully.");
 
-/* =========================================================
-MOBILE MENU
-========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
 
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
+    /* =========================================
+       MOBILE NAVIGATION
+    ========================================= */
 
-if (menuToggle && navLinks) {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
 
-```
-menuToggle.addEventListener("click", (event) => {
+    if (menuToggle && navLinks) {
 
-    event.stopPropagation();
+        menuToggle.addEventListener("click", (event) => {
 
-    const isOpen = navLinks.classList.toggle("active");
+            event.stopPropagation();
 
-    menuToggle.classList.toggle("active", isOpen);
+            const isOpen = navLinks.classList.toggle("active");
 
-    menuToggle.setAttribute(
-        "aria-expanded",
-        isOpen ? "true" : "false"
-    );
+            menuToggle.classList.toggle("active", isOpen);
 
-});
+            menuToggle.setAttribute(
+                "aria-expanded",
+                isOpen ? "true" : "false"
+            );
 
+            menuToggle.setAttribute(
+                "aria-label",
+                isOpen ? "Close menu" : "Open menu"
+            );
 
-/* ---------- CLOSE MENU AFTER CLICKING A LINK ---------- */
-
-navLinks.querySelectorAll("a").forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        navLinks.classList.remove("active");
-
-        menuToggle.classList.remove("active");
-
-        menuToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    });
-
-});
+        });
 
 
-/* ---------- CLOSE MENU WHEN CLICKING OUTSIDE ---------- */
+        /* Close menu after selecting a link */
 
-document.addEventListener("click", (event) => {
+        navLinks.querySelectorAll("a").forEach((link) => {
 
-    if (!event.target.closest(".navbar")) {
+            link.addEventListener("click", () => {
 
-        navLinks.classList.remove("active");
+                navLinks.classList.remove("active");
 
-        menuToggle.classList.remove("active");
+                menuToggle.classList.remove("active");
 
-        menuToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                );
+
+            });
+
+        });
+
+
+        /* Close menu when clicking outside */
+
+        document.addEventListener("click", (event) => {
+
+            if (!event.target.closest(".navbar")) {
+
+                navLinks.classList.remove("active");
+
+                menuToggle.classList.remove("active");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                );
+
+            }
+
+        });
 
     }
 
-});
-```
 
-}
+    /* =========================================
+       DRAGON PAGE TRANSITION
+    ========================================= */
 
-/* =========================================================
-DRAGON PAGE TRANSITION
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-```
-const transitionDragon = document.createElement("div");
-
-transitionDragon.className = "dragon-transition";
-
-transitionDragon.innerHTML = `
-    <img
-        src="${getDragonPath()}"
-        alt=""
-        aria-hidden="true"
-    >
-`;
-
-document.body.appendChild(transitionDragon);
+    const currentPath = window.location.pathname;
 
 
-/* ---------- PAGE ENTER ---------- */
-
-document.body.classList.add("page-enter");
-
-requestAnimationFrame(() => {
-
-    document.body.classList.add("page-enter-active");
-
-});
+    /*
+     * Don't create a transition when the page is
+     * opened directly or refreshed.
+     *
+     * The dragon only appears when navigating
+     * between pages using internal links.
+     */
 
 
-/* ---------- INTERNAL LINK CLICK ---------- */
+    function getDragonPath() {
 
-document.querySelectorAll("a[href]").forEach(link => {
-
-    link.addEventListener("click", (event) => {
-
-        const href = link.getAttribute("href");
-
-        if (!href) return;
-
-        /* Ignore special links */
+        /*
+         * Root homepage
+         */
 
         if (
-            href.startsWith("#") ||
-            href.startsWith("mailto:") ||
-            href.startsWith("tel:") ||
-            href.startsWith("https://") ||
-            href.startsWith("http://") ||
-            href.startsWith("javascript:")
+            currentPath === "/" ||
+            currentPath.endsWith("/index.html")
+                && !currentPath.includes("/blog/")
+                && !currentPath.includes("/contact/")
+                && !currentPath.includes("/portfolio/")
+                && !currentPath.includes("/services/")
         ) {
+            return "assets/mascot/poses/dragon-flying.png";
+        }
+
+
+        /*
+         * All pages inside one folder
+         */
+
+        return "../assets/mascot/poses/dragon-flying.png";
+    }
+
+
+    function createDragonTransition() {
+
+        /* Prevent duplicates */
+
+        if (document.querySelector(".dragon-transition")) {
             return;
         }
 
 
-        /* Ignore new-tab links */
+        const dragon = document.createElement("div");
 
-        if (
-            link.target === "_blank" ||
-            event.ctrlKey ||
-            event.metaKey ||
-            event.shiftKey ||
-            event.altKey
-        ) {
-            return;
-        }
+        dragon.className = "dragon-transition";
 
 
-        event.preventDefault();
+        const dragonImage = document.createElement("img");
 
-        transitionDragon.classList.add("fly-out");
+        dragonImage.src = getDragonPath();
 
-        document.body.classList.add("page-leaving");
+        dragonImage.alt = "";
+
+        dragonImage.setAttribute("aria-hidden", "true");
 
 
-        setTimeout(() => {
+        dragon.appendChild(dragonImage);
 
-            window.location.href = href;
+        document.body.appendChild(dragon);
 
-        }, 650);
+
+        /*
+         * Force browser to register the element
+         * before starting the animation.
+         */
+
+        requestAnimationFrame(() => {
+
+            dragon.classList.add("dragon-transition-active");
+
+        });
+
+    }
+
+
+    /*
+     * Handle internal page navigation.
+     */
+
+    document.querySelectorAll("a[href]").forEach((link) => {
+
+        link.addEventListener("click", (event) => {
+
+            const href = link.getAttribute("href");
+
+
+            /* Ignore empty links */
+
+            if (!href) {
+                return;
+            }
+
+
+            /* Ignore # links */
+
+            if (
+                href === "#" ||
+                href.startsWith("#")
+            ) {
+                return;
+            }
+
+
+            /* Ignore external links */
+
+            if (
+                href.startsWith("http://") ||
+                href.startsWith("https://") ||
+                href.startsWith("//")
+            ) {
+                return;
+            }
+
+
+            /* Ignore email and phone links */
+
+            if (
+                href.startsWith("mailto:") ||
+                href.startsWith("tel:")
+            ) {
+                return;
+            }
+
+
+            /* Ignore links opening in new tabs */
+
+            if (link.target === "_blank") {
+                return;
+            }
+
+
+            /*
+             * Don't animate same-page navigation.
+             */
+
+            const currentUrl = new URL(
+                window.location.href
+            );
+
+            const destinationUrl = new URL(
+                href,
+                window.location.href
+            );
+
+
+            if (
+                destinationUrl.pathname === currentUrl.pathname &&
+                destinationUrl.search === currentUrl.search
+            ) {
+                return;
+            }
+
+
+            /*
+             * Everything looks like a normal internal
+             * page navigation.
+             */
+
+            event.preventDefault();
+
+
+            createDragonTransition();
+
+
+            /*
+             * Give the dragon time to fly across
+             * before changing pages.
+             */
+
+            setTimeout(() => {
+
+                window.location.href =
+                    destinationUrl.href;
+
+            }, 650);
+
+        });
 
     });
 
 });
-```
-
-});
-
-/* =========================================================
-DRAGON IMAGE PATH
-========================================================= */
-
-function getDragonPath() {
-
-```
-const path = window.location.pathname;
-
-if (
-    path.endsWith("/") ||
-    path.endsWith("index.html")
-) {
-
-    return path.includes("/contact/") ||
-           path.includes("/services/") ||
-           path.includes("/portfolio/") ||
-           path.includes("/blog/")
-        ? "../assets/mascot/poses/dragon-flying.png"
-        : "assets/mascot/poses/dragon-flying.png";
-
-}
-
-return "../assets/mascot/poses/dragon-flying.png";
-```
-
-}
