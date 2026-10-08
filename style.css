@@ -364,18 +364,95 @@ a {
 
 
 /* =========================================================
-   FLYING DRAGON
+   HOME DRAGON
 ========================================================= */
 
 .hero-mascot {
     flex: 0 0 380px;
 
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    animation: dragon-enter 1.2s ease-out forwards;
+    animation:
+        dragon-enter
+        1.2s
+        ease-out
+        forwards;
 }
+
+
+/* ---------- HOME SPEECH BUBBLE ---------- */
+
+.hero-mascot-bubble {
+    position: absolute;
+
+    /*
+     * Bubble sits above and to the
+     * left of the dragon's head.
+     */
+    top: 18px;
+    left: -45px;
+
+    width: 185px;
+
+    padding: 14px 16px;
+
+    background: var(--white);
+
+    color: var(--dark-grey);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    line-height: 1.45;
+
+    text-align: left;
+
+    box-shadow:
+        0 12px 28px rgba(17, 20, 17, 0.10);
+
+    z-index: 3;
+
+    animation:
+        hero-bubble-enter
+        0.8s
+        ease-out
+        0.7s
+        both;
+}
+
+
+/* ---------- SPEECH BUBBLE TAIL ---------- */
+
+.hero-mascot-bubble::after {
+    content: "";
+
+    position: absolute;
+
+    right: 28px;
+    bottom: -9px;
+
+    width: 17px;
+    height: 17px;
+
+    background: var(--white);
+
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+
+    transform: rotate(45deg);
+}
+
+
+/* ---------- DRAGON IMAGE ---------- */
 
 .hero-mascot img {
     width: min(380px, 100%);
@@ -384,8 +461,19 @@ a {
 
     display: block;
 
+    /*
+     * Mirror the existing dragon so
+     * it faces LEFT.
+     */
+    transform:
+        scaleX(-1);
+
+    transform-origin: center center;
+
     filter:
-        drop-shadow(0 20px 25px rgba(17, 20, 17, 0.12));
+        drop-shadow(
+            0 20px 25px rgba(17, 20, 17, 0.12)
+        );
 
     animation:
         dragon-fly
@@ -394,6 +482,11 @@ a {
         1.2s
         infinite;
 }
+
+
+/* =========================================================
+   HOME DRAGON ANIMATIONS
+========================================================= */
 
 
 /* ---------- DRAGON ENTERS FROM RIGHT ---------- */
@@ -436,26 +529,52 @@ a {
     0%,
     100% {
         transform:
+            scaleX(-1)
             translateY(0)
             rotate(0deg);
     }
 
     25% {
         transform:
+            scaleX(-1)
             translateY(-10px)
-            rotate(1deg);
+            rotate(-1deg);
     }
 
     50% {
         transform:
+            scaleX(-1)
             translateY(-18px)
             rotate(0deg);
     }
 
     75% {
         transform:
+            scaleX(-1)
             translateY(-8px)
-            rotate(-1deg);
+            rotate(1deg);
+    }
+}
+
+
+/* ---------- BUBBLE ENTER ---------- */
+
+@keyframes hero-bubble-enter {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(0.92);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
     }
 }
 
@@ -1397,16 +1516,49 @@ footer {
         width: 100%;
     }
 
+
+    /* ---------- HOME DRAGON ---------- */
+
     .hero-mascot {
         flex: none;
 
-        width: min(280px, 75vw);
+        width: min(300px, 78vw);
 
         order: 2;
+
+        margin-top: 20px;
     }
 
     .hero-mascot img {
         width: 100%;
+    }
+
+
+    /* ---------- HOME SPEECH BUBBLE ---------- */
+
+    .hero-mascot-bubble {
+        top: -20px;
+
+        left: -25px;
+
+        width: 155px;
+
+        padding: 11px 13px;
+
+        font-size: 12px;
+
+        line-height: 1.4;
+
+        border-radius: 14px;
+    }
+
+    .hero-mascot-bubble::after {
+        right: 20px;
+
+        bottom: -7px;
+
+        width: 13px;
+        height: 13px;
     }
 
 
