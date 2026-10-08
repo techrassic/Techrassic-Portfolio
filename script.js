@@ -121,6 +121,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
+       HOMEPAGE MASCOT GREETING
+    ========================================= */
+
+    const heroMascot = document.querySelector(".hero-mascot");
+    const heroMascotBubble =
+        document.querySelector(".hero-mascot-bubble");
+
+
+    /*
+     * Show the homepage dragon's greeting
+     * after the dragon has finished entering.
+     */
+    if (heroMascot && heroMascotBubble) {
+
+        setTimeout(() => {
+
+            heroMascotBubble.classList.add("show");
+
+        }, 1500);
+
+
+        /*
+         * Hide the greeting after a few seconds.
+         * The bubble can appear again when the
+         * visitor interacts with the dragon.
+         */
+        setTimeout(() => {
+
+            heroMascotBubble.classList.remove("show");
+
+        }, 5200);
+
+
+        /*
+         * Show the greeting again when the user
+         * interacts with the mascot.
+         */
+        heroMascot.addEventListener("mouseenter", () => {
+
+            heroMascotBubble.classList.add("show");
+
+        });
+
+
+        heroMascot.addEventListener("mouseleave", () => {
+
+            setTimeout(() => {
+
+                heroMascotBubble.classList.remove("show");
+
+            }, 1200);
+
+        });
+
+    }
+
+
+    /* =========================================
        DRAGON PAGE TRANSITION
     ========================================= */
 
