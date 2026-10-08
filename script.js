@@ -9,73 +9,109 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector(".menu-toggle");
     const navLinks = document.querySelector(".nav-links");
 
+    /*
+     * Single source of truth for the mobile menu.
+     */
+    let isMenuOpen = false;
+
+
+    /*
+     * Open / close the menu.
+     * Every menu action goes through this function.
+     */
+    function setMenuOpen(open) {
+
+        isMenuOpen = open;
+
+        if (!menuToggle || !navLinks) {
+            return;
+        }
+
+        navLinks.classList.toggle("active", isMenuOpen);
+
+        menuToggle.classList.toggle("active", isMenuOpen);
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isMenuOpen ? "true" : "false"
+        );
+
+        menuToggle.setAttribute(
+            "aria-label",
+            isMenuOpen ? "Close menu" : "Open menu"
+        );
+    }
+
+
     if (menuToggle && navLinks) {
 
+        /*
+         * Initial state.
+         * This prevents the menu from accidentally
+         * starting open.
+         */
+        setMenuOpen(false);
+
+
+        /*
+         * HAMBURGER TOGGLE
+         *
+         * First tap  -> open
+         * Second tap -> close
+         */
         menuToggle.addEventListener("click", (event) => {
+
+            event.preventDefault();
 
             event.stopPropagation();
 
-            const isOpen = navLinks.classList.toggle("active");
-
-            menuToggle.classList.toggle("active", isOpen);
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
-
-            menuToggle.setAttribute(
-                "aria-label",
-                isOpen ? "Close menu" : "Open menu"
-            );
+            setMenuOpen(!isMenuOpen);
 
         });
 
 
-        /* Close menu after selecting a link */
-
+        /*
+         * CLOSE AFTER CLICKING A NAVIGATION LINK
+         */
         navLinks.querySelectorAll("a").forEach((link) => {
 
             link.addEventListener("click", () => {
 
-                navLinks.classList.remove("active");
-
-                menuToggle.classList.remove("active");
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                );
+                setMenuOpen(false);
 
             });
 
         });
 
 
-        /* Close menu when clicking outside */
-
+        /*
+         * CLOSE WHEN CLICKING OUTSIDE THE NAVBAR
+         */
         document.addEventListener("click", (event) => {
+
+            if (!isMenuOpen) {
+                return;
+            }
 
             if (!event.target.closest(".navbar")) {
 
-                navLinks.classList.remove("active");
+                setMenuOpen(false);
 
-                menuToggle.classList.remove("active");
+            }
 
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+        });
 
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                );
+
+        /*
+         * CLOSE WITH ESCAPE KEY
+         */
+        document.addEventListener("keydown", (event) => {
+
+            if (event.key === "Escape" && isMenuOpen) {
+
+                setMenuOpen(false);
+
+                menuToggle.focus();
 
             }
 
@@ -92,44 +128,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /*
-     * Don't create a transition when the page is
-     * opened directly or refreshed.
-     *
-     * The dragon only appears when navigating
-     * between pages using internal links.
+     * Get the correct dragon image path.
      */
-
-
     function getDragonPath() {
 
         /*
          * Root homepage
          */
-
         if (
             currentPath === "/" ||
-            currentPath.endsWith("/index.html")
-                && !currentPath.includes("/blog/")
-                && !currentPath.includes("/contact/")
-                && !currentPath.includes("/portfolio/")
-                && !currentPath.includes("/services/")
+            (
+                currentPath.endsWith("/index.html") &&
+                !currentPath.includes("/blog/") &&
+                !currentPath.includes("/contact/") &&
+                !currentPath.includes("/portfolio/") &&
+                !currentPath.includes("/services/")
+            )
         ) {
             return "assets/mascot/poses/dragon-flying.png";
         }
 
 
         /*
-         * All pages inside one folder
+         * Pages inside folders
          */
-
         return "../assets/mascot/poses/dragon-flying.png";
     }
 
 
     function createDragonTransition() {
 
-        /* Prevent duplicates */
-
+        /*
+         * Prevent duplicates.
+         */
         if (document.querySelector(".dragon-transition")) {
             return;
         }
@@ -155,10 +186,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-         * Force browser to register the element
+         * Force the browser to register the element
          * before starting the animation.
          */
-
         requestAnimationFrame(() => {
 
             dragon.classList.add("dragon-transition-active");
@@ -171,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /*
      * Handle internal page navigation.
      */
-
     document.querySelectorAll("a[href]").forEach((link) => {
 
         link.addEventListener("click", (event) => {
@@ -180,14 +209,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* Ignore empty links */
-
             if (!href) {
                 return;
             }
 
 
             /* Ignore # links */
-
             if (
                 href === "#" ||
                 href.startsWith("#")
@@ -197,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* Ignore external links */
-
             if (
                 href.startsWith("http://") ||
                 href.startsWith("https://") ||
@@ -208,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* Ignore email and phone links */
-
             if (
                 href.startsWith("mailto:") ||
                 href.startsWith("tel:")
@@ -218,8 +243,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* Ignore links opening in new tabs */
-
             if (link.target === "_blank") {
+                return;
+            }
+
+
+            /*
+             * Ignore modified clicks.
+             *
+             * This allows Ctrl/Cmd + click,
+             * Shift + click and middle-click
+             * to behave normally.
+             */
+            if (
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey ||
+                event.button !== 0
+            ) {
                 return;
             }
 
@@ -227,7 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
             /*
              * Don't animate same-page navigation.
              */
-
             const currentUrl = new URL(
                 window.location.href
             );
@@ -239,6 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
+                destinationUrl.origin === currentUrl.origin &&
                 destinationUrl.pathname === currentUrl.pathname &&
                 destinationUrl.search === currentUrl.search
             ) {
@@ -247,11 +289,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-             * Everything looks like a normal internal
-             * page navigation.
+             * Everything looks like a normal
+             * internal page navigation.
              */
-
             event.preventDefault();
+
+
+            /*
+             * Close the mobile menu immediately
+             * before starting the dragon transition.
+             */
+            if (isMenuOpen) {
+                setMenuOpen(false);
+            }
 
 
             createDragonTransition();
@@ -261,7 +311,6 @@ document.addEventListener("DOMContentLoaded", () => {
              * Give the dragon time to fly across
              * before changing pages.
              */
-
             setTimeout(() => {
 
                 window.location.href =
