@@ -394,17 +394,17 @@ a {
      * left of the dragon's head.
      */
     top: -65px;
-    left: -45px;
+    left: -80px;
 
     width: 185px;
 
     padding: 14px 16px;
 
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.82);
 
     color: var(--dark-grey);
 
-    border: 1px solid var(--border);
+    border: 1px solid rgba(223, 228, 223, 0.75);
 
     border-radius: 16px;
 
