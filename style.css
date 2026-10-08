@@ -56,7 +56,7 @@ button,
 a {
     -webkit-tap-highlight-color: transparent;
 }
-  
+
 
 /* ---------- GLOBAL ---------- */
 
@@ -374,8 +374,6 @@ a {
     align-items: center;
     justify-content: center;
 
-    position: relative;
-
     animation: dragon-enter 1.2s ease-out forwards;
 }
 
@@ -395,109 +393,6 @@ a {
         ease-in-out
         1.2s
         infinite;
-
-    transition:
-        filter 0.3s ease,
-        transform 0.3s ease;
-}
-
-
-/* ---------- DRAGON HOVER ---------- */
-
-.hero-mascot:hover img {
-    filter:
-        drop-shadow(0 24px 30px rgba(17, 20, 17, 0.18));
-
-    transform: scale(1.04) rotate(-2deg);
-}
-
-
-/* ---------- HERO MASCOT SPEECH BUBBLE ---------- */
-
-.hero-mascot-bubble {
-    position: absolute;
-
-    right: calc(100% - 30px);
-    top: 12%;
-
-    width: 210px;
-
-    padding: 14px 17px;
-
-    background: var(--white);
-
-    color: var(--dark-grey);
-
-    border: 1px solid var(--border);
-
-    border-radius: 17px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    line-height: 1.4;
-
-    text-align: center;
-
-    box-shadow:
-        0 12px 30px rgba(17, 20, 17, 0.10);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transform:
-        translateY(12px)
-        scale(0.88);
-
-    transform-origin: bottom right;
-
-    transition:
-        opacity 0.35s ease,
-        transform 0.35s ease,
-        visibility 0s linear 0.35s;
-
-    z-index: 5;
-}
-
-
-/* ---------- SPEECH BUBBLE SHOWS ---------- */
-
-.hero-mascot-bubble.show {
-    opacity: 1;
-
-    visibility: visible;
-
-    transform:
-        translateY(0)
-        scale(1);
-
-    transition:
-        opacity 0.35s ease,
-        transform 0.35s ease,
-        visibility 0s linear 0s;
-}
-
-
-/* ---------- SPEECH BUBBLE TAIL ---------- */
-
-.hero-mascot-bubble::after {
-    content: "";
-
-    position: absolute;
-
-    right: -8px;
-    bottom: 20px;
-
-    width: 16px;
-    height: 16px;
-
-    background: var(--white);
-
-    border-right: 1px solid var(--border);
-    border-top: 1px solid var(--border);
-
-    transform: rotate(45deg);
 }
 
 
@@ -1515,46 +1410,6 @@ footer {
     }
 
 
-    /* ---------- HERO MASCOT BUBBLE ---------- */
-
-    .hero-mascot-bubble {
-        right: auto;
-        left: 50%;
-
-        top: -55px;
-
-        width: 190px;
-
-        font-size: 12px;
-
-        transform:
-            translateX(-50%)
-            translateY(12px)
-            scale(0.88);
-    }
-
-    .hero-mascot-bubble.show {
-        transform:
-            translateX(-50%)
-            translateY(0)
-            scale(1);
-    }
-
-    .hero-mascot-bubble::after {
-        right: auto;
-        left: 50%;
-
-        bottom: -8px;
-
-        border-right: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        border-top: 0;
-        border-left: 0;
-
-        transform: translateX(-50%) rotate(45deg);
-    }
-
-
     /* ---------- ABOUT ---------- */
 
     .about-grid {
@@ -1769,6 +1624,8 @@ footer {
 
     display: block;
 
+    transform-origin: center bottom;
+
     filter:
         drop-shadow(
             0 15px 20px rgba(17, 20, 17, 0.15)
@@ -1781,7 +1638,8 @@ footer {
         infinite;
 
     transition:
-        filter 0.3s ease;
+        filter 0.3s ease,
+        transform 0.3s ease;
 }
 
 
@@ -1792,6 +1650,73 @@ footer {
         drop-shadow(
             0 18px 25px rgba(17, 20, 17, 0.20)
         );
+
+    transform:
+        translateY(-5px)
+        rotate(-2deg)
+        scale(1.03);
+}
+
+
+/* =========================================================
+   MASCOT GREETING REACTION
+========================================================= */
+
+.page-mascot.mascot-attention img {
+    animation:
+        mascot-page-float
+        3.5s
+        ease-in-out
+        infinite,
+        mascot-attention
+        0.75s
+        ease-in-out;
+}
+
+
+@keyframes mascot-attention {
+
+    0% {
+        transform:
+            translateY(0)
+            rotate(0deg)
+            scale(1);
+    }
+
+    20% {
+        transform:
+            translateY(-6px)
+            rotate(3deg)
+            scale(1.02);
+    }
+
+    40% {
+        transform:
+            translateY(-2px)
+            rotate(-3deg)
+            scale(1.03);
+    }
+
+    60% {
+        transform:
+            translateY(-7px)
+            rotate(2deg)
+            scale(1.02);
+    }
+
+    80% {
+        transform:
+            translateY(-2px)
+            rotate(-1deg)
+            scale(1.01);
+    }
+
+    100% {
+        transform:
+            translateY(0)
+            rotate(0deg)
+            scale(1);
+    }
 }
 
 
@@ -1906,11 +1831,27 @@ footer {
 
     0%,
     100% {
-        transform: translateY(0);
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    25% {
+        transform:
+            translateY(-4px)
+            rotate(0.5deg);
     }
 
     50% {
-        transform: translateY(-10px);
+        transform:
+            translateY(-10px)
+            rotate(0deg);
+    }
+
+    75% {
+        transform:
+            translateY(-5px)
+            rotate(-0.5deg);
     }
 
 }
@@ -1942,6 +1883,13 @@ footer {
         transform:
             translateY(0)
             scale(1);
+    }
+
+    .page-mascot:hover img {
+        transform:
+            translateY(-3px)
+            rotate(-1deg)
+            scale(1.02);
     }
 
 }
